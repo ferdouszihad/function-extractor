@@ -14,7 +14,8 @@ function extractCode(code) {
       let stB = codestr.indexOf("{", stF);
       let enB = stF;
       stack.push("{");
-      for (let i = stB + 1; i < codestr.length; i++) {
+      let i;
+      for (i = stB + 1; i < codestr.length; i++) {
         if (codestr[i] == "(" || codestr[i] == "{" || codestr[i] == "[") {
           stack.push(codestr[i]);
         }
@@ -36,11 +37,13 @@ function extractCode(code) {
           enB = i;
           break;
         }
+        if (codestr.startsWith("function", i)) {
+          break;
+        }
       }
-      console.log(enB, stack);
+      console.log(i, stack);
       if (stF == enB || stack.length != 0) {
-        alert("there something wrong in your code");
-        return;
+        codestr = codestr.replace(codestr.slice(stF, i - 1), "");
       }
       newCode.push(codestr.slice(stF, enB + 1));
       // console.log(newCode);
@@ -52,6 +55,8 @@ function extractCode(code) {
     }
   }
   console.log(newCode);
+
+  newCode = newCode.filter((func) => func.startsWith("function"));
   return newCode.join("\n\n");
 }
 
