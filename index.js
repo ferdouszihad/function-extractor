@@ -44,6 +44,7 @@ function extractCode(code) {
       console.log(i, stack);
       if (stF == enB || stack.length != 0) {
         codestr = codestr.replace(codestr.slice(stF, i - 1), "");
+        continue;
       }
       newCode.push(codestr.slice(stF, enB + 1));
       // console.log(newCode);
@@ -54,15 +55,16 @@ function extractCode(code) {
       break;
     }
   }
-  console.log(newCode);
 
   newCode = newCode.filter((func) => func.startsWith("function"));
+  console.log(newCode);
   return newCode.join("\n\n");
 }
 
 document.getElementById("genarate").addEventListener("click", () => {
   const code = document.getElementById("code").value;
   const newCode = extractCode(code);
+  document.getElementById("result").innerText = "";
   document.getElementById("result").innerText =
     newCode || "paste your Code again";
 });
